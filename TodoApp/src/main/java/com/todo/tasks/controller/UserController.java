@@ -1,5 +1,6 @@
 package com.todo.tasks.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todo.tasks.model.Tasks;
 import com.todo.tasks.model.User;
 import com.todo.tasks.service.UserService;
 
@@ -28,6 +30,16 @@ public class UserController {
     @GetMapping("/checkUserAuth/{userId}/{password}")
     public Optional<User> checkUserAuth(@PathVariable Integer userId,@PathVariable String password){
     	return userService.checkUserAuth(userId, password);
+    }
+    @GetMapping("/tasks")
+    public ResponseEntity<List<Tasks>> viewAllTasks() {
+        List<Tasks> tasksList = userService.viewAllFolder();
+        return ResponseEntity.ok(tasksList);
+    }
+    @GetMapping("/tasks/{taskFolderName}")
+    public ResponseEntity<List<Tasks>> findTasksByFolder(@PathVariable String taskFolderName) {
+        List<Tasks> tasksList = userService.findTaskByFolder(taskFolderName);
+        return ResponseEntity.ok(tasksList);
     }
 }
 
